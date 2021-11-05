@@ -1,0 +1,13 @@
+{
+  "labels": {
+    "addDescription": "Lägg till ny task",
+    "add": "Lägg till",
+    "save": "Spara",
+    "edit": "Ändra",
+    "search": "Sök",
+    "title": "Titel",
+    "description": "Beskrivning",
+    "dueDate": "Färdig senast"
+  },
+  "lists": ["To do", "Doing", "Done"]
+}

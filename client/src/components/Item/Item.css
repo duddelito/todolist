@@ -1,0 +1,21 @@
+li {
+    border: 1px solid lightgrey;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    position: relative;
+}
+
+.keyprop {
+    bottom: 16px;
+    font-size: 10px;
+    position: absolute;
+    text-align: right;
+    right: 23px;
+
+}
+
+.edit {
+    cursor: pointer;
+    float: right;
+    margin-top: 10px;
+}

@@ -1,0 +1,16 @@
+.column {
+    background: floralwhite;
+    border: 1px solid gray;
+    border-radius: 5px;
+    display: inline-table;
+    list-style: none;
+    margin-right: 40px;
+    min-height: 300px;
+    padding: 20px;
+    vertical-align: top;
+    width: 250px;
+}
+
+h2 {
+    color: dimgray;
+}

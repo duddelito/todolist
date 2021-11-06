@@ -8,14 +8,6 @@ import Button from '../Button/Button';
 
 const Form = (props: any) => {
 
-    const [search, setSearch] = useState('');
-    const [orgList, setOrgList] = useState(props.lists);
-
-    const handleSearch = (event: any) => {
-        setSearch(event.target.value);
-        console.log(props.lists);
-    }
-
     const [itemData, setItemData] = useState({
         id: "",
         title: "",
@@ -24,11 +16,9 @@ const Form = (props: any) => {
     });
 
     useEffect(() => {
-
         if (props.selectedItem) {
             setItemData(props.selectedItem);
         }
-
     }, [props.selectedItem]);
 
     const handleChange = (event: any) => {
@@ -38,7 +28,6 @@ const Form = (props: any) => {
             ...itemData,
             [event.target.name]: value
         });
-
     }
 
     const handleClick = (event: any) => {
@@ -75,10 +64,6 @@ const Form = (props: any) => {
                     description: ""
                 });
             });
-
-
-
-
         props.loading(false);
     }
 
@@ -87,7 +72,7 @@ const Form = (props: any) => {
             <h4>{I18n.get.labels.addDescription}</h4>
             <form>
                 <Input type="hidden" name="id" value={itemData.id} />
-                <Input type="text" name="title" value={itemData.title} onChange={handleChange} title={I18n.get.labels.title} />
+                <Input type="text" name="title" value={itemData.title} onChange={handleChange} placeholder={I18n.get.labels.title} />
                 <label>{I18n.get.labels.dueDate}
                     <Input type="date" name="dueDate" value={itemData.dueDate} onChange={handleChange} />
                 </label>
@@ -95,11 +80,6 @@ const Form = (props: any) => {
                 <Button value={itemData.id ? I18n.get.labels.save : I18n.get.labels.add} onClick={handleClick} />
                 {itemData.id && <Button class="delete" value={I18n.get.labels.delete} onClick={handleClick} />}
             </form>
-            <div className="search">
-                <form>
-                    <Input type="text" name="search" value={search} onChange={handleSearch} placeholder={I18n.get.labels.search} />
-                </form>
-            </div>
         </div>
     );
 }

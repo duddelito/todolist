@@ -3,8 +3,10 @@ import {DragDropContext, DropResult} from "react-beautiful-dnd";
 
 import './App.css';
 
+import Search from "./components/Search/Search";
 import Lists from "./components/Lists/Lists";
 import Form from "./components/Form/Form";
+import Input from "./components/Input/Input";
 import I18n from "./services/I18n";
 
 
@@ -41,6 +43,21 @@ const App = () => {
 
     const handleLists = (data: any) => {
         setLists(data);
+    }
+
+    const [searchValue, setSearchValue] = useState('');
+    const handleSearchValue = (data: any) => {
+        setSearchValue(data);
+    }
+
+    const filteredLists = () => {
+        let filteredLists: any = [];
+        lists.forEach((list: any, listKey: number) => {
+            const filteredList = list.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()));
+            filteredLists.push(filteredList);
+        });
+
+        return filteredLists;
     }
 
     useEffect(() => {
@@ -98,8 +115,10 @@ const App = () => {
     return (
         <div className="app">
             <h1>To do list app</h1>
+            <Search handleSearchValue={handleSearchValue} />
+
             <DragDropContext onDragEnd={onDragEnd}>
-                <Lists lists={lists} handleEdit={handleEdit} />
+                <Lists lists={filteredLists()} handleEdit={handleEdit} />
             </DragDropContext>
             <Form value={I18n.get.labels.search} loading={handleLoader} handleLists={handleLists} lists={lists} selectedItem={selectedItem} requestOptions={requestOptions} baseUrl={baseUrl} />
             {loading && (<div className="loader"></div>)}

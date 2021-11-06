@@ -9,7 +9,28 @@ import I18n from "./services/I18n";
 
 
 const App = () => {
+    const baseUrl = 'http://localhost:3001/';
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: ''
+    };
+
     const [loading, setLoading] = useState(false);
+    const [selectedItem, setSelectedItem] = useState({
+        id: "",
+        title: "",
+        dueDate: "",
+        description: ""
+    });
+
+    const handleEdit = (event: any) => {
+        const indexId = event.target.dataset.indexid;
+        const listId = event.target.dataset.listid;
+        const currentItem = lists[listId][indexId];
+        setSelectedItem(currentItem);
+    }
 
     const handleLoader = (loading: boolean) => {
         setLoading(loading);
@@ -23,8 +44,7 @@ const App = () => {
     }
 
     useEffect(() => {
-        let requestUrl = 'http://localhost:3001/';
-        requestUrl += 'todo/get';
+        const requestUrl = baseUrl + 'todo/get';
 
         fetch(requestUrl)
             .then((response) => response.json())
@@ -34,25 +54,12 @@ const App = () => {
     }, []);
 
     const updateServer = (data) => {
-        let requestUrl = 'http://localhost:3001/';
-        requestUrl += 'todo/update';
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        };
+        const requestUrl = baseUrl + 'todo/update';
+        requestOptions.body = JSON.stringify(data);
 
         fetch(requestUrl, requestOptions)
             .then((response) => response.json())
             .then((data) => {});
-    }
-
-    const handleEdit = (event: any) => {
-        const indexId = event.target.dataset.indexid;
-        const listId = event.target.dataset.listid;
-        const item = lists[listId][indexId];
-        console.log('editing...');
-        console.log(item);
     }
 
     const onDragEnd = ({ source, destination }: DropResult) => {
@@ -94,7 +101,7 @@ const App = () => {
             <DragDropContext onDragEnd={onDragEnd}>
                 <Lists lists={lists} handleEdit={handleEdit} />
             </DragDropContext>
-            <Form value={I18n.get.labels.search} loading={handleLoader} buttonValue={I18n.get.labels.add} handleLists={handleLists} />
+            <Form value={I18n.get.labels.search} loading={handleLoader} handleLists={handleLists} lists={lists} selectedItem={selectedItem} requestOptions={requestOptions} baseUrl={baseUrl} />
             {loading && (<div className="loader"></div>)}
         </div>
     );

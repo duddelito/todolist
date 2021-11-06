@@ -22,7 +22,7 @@ const Item = (props: any) => {
                     {...provided.dragHandleProps}
                     style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                 >
-                    <div className="edit" data-indexid={props.index} data-listid={props.currentList}>{I18n.get.labels.edit}</div>
+                    <span className="edit" data-indexid={props.index} data-listid={props.currentList}></span>
                     <h3>{props.item.title}</h3>
                     <p>{props.item.description}</p>
                     <p className="dueDate">{props.item.dueDate}</p>

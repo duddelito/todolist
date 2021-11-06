@@ -5,7 +5,7 @@ import './Button.css';
 const Button = (props: any) => {
     const { value, onClick} = props;
     return(
-        <button onClick={onClick}>{value}</button>
+        <button className={props.class} name={props.class} onClick={onClick}>{value}</button>
     );
 }
 

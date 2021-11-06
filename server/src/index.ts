@@ -101,6 +101,105 @@ app.post('/todo/add', function(request:Request, response:Response) {
 });
 
 
+app.post('/todo/edit', function(request:Request, response:Response) {
+
+    // Prepare new to do item
+    const editedTodo = {
+        id: request.body.id,
+        dueDate: request.body.dueDate,
+        title: request.body.title,
+        description: request.body.description,
+    };
+
+    // Read to see if there already is a to do list
+    fs.readFile('./todos.json', 'utf8', (error, data) => {
+
+        // If no list, then create one
+        if (error) {
+            console.log('No list found');
+            return;
+        }
+
+        // Else try to update the list with the new item
+        try {
+
+            // let todos: any = [];
+            let lists: any;
+            if (data.length > 0) {
+                lists = JSON.parse(data);
+            }
+
+            lists.forEach((list: any, listKey: number) => {
+                list.forEach((item: any, itemKey: number) => {
+                    if (item.id === editedTodo.id) {
+                        lists[listKey][itemKey] = editedTodo;
+                    }
+                });
+            });
+
+            fs.writeFile('./todos.json', JSON.stringify(lists), error => {
+                if (error) {
+                    console.log('Error updating file', error);
+                } else {
+                    console.log('Successfully updated file with the edited todo');
+                    response.json(lists);
+                }
+            });
+
+        } catch (err) {
+            console.log('Error parsing JSON:', err);
+        }
+    });
+});
+
+
+app.post('/todo/delete', function(request:Request, response:Response) {
+
+    // Prepare new to do item
+    const toDelete = request.body.id;
+
+    // Read to see if there already is a to do list
+    fs.readFile('./todos.json', 'utf8', (error, data) => {
+
+        // If no list, then create one
+        if (error) {
+            console.log('No list found');
+            return;
+        }
+
+        // Else try to update the list with the new item
+        try {
+
+            // let todos: any = [];
+            let lists: any;
+            if (data.length > 0) {
+                lists = JSON.parse(data);
+            }
+
+            lists.forEach((list: any, listKey: number) => {
+                list.forEach((item: any, itemKey: number) => {
+                    if (item.id === toDelete) {
+                        lists[listKey].splice(itemKey, 1);
+                    }
+                });
+            });
+
+            fs.writeFile('./todos.json', JSON.stringify(lists), error => {
+                if (error) {
+                    console.log('Error updating file', error);
+                } else {
+                    console.log('Successfully updated file deleting a todo');
+                    response.json(lists);
+                }
+            });
+
+        } catch (err) {
+            console.log('Error parsing JSON:', err);
+        }
+    });
+});
+
+
 app.post('/todo/update', function(request:Request, response:Response) {
     try {
 

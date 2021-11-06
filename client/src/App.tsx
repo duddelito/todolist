@@ -6,12 +6,12 @@ import './App.css';
 import Search from "./components/Search/Search";
 import Lists from "./components/Lists/Lists";
 import Form from "./components/Form/Form";
-import Input from "./components/Input/Input";
 import I18n from "./services/I18n";
+import Button from "./components/Button/Button";
 
 
 const App = () => {
-    const baseUrl = 'http://localhost:3001/';
+    const baseUrl = process.env.REACT_APP_BASE_URL;
 
     const requestOptions = {
         method: 'POST',
@@ -30,6 +30,7 @@ const App = () => {
     const handleEdit = (event: any) => {
         const indexId = event.target.dataset.indexid;
         const listId = event.target.dataset.listid;
+
         const currentItem = lists[listId][indexId];
         setSelectedItem(currentItem);
     }
@@ -38,11 +39,30 @@ const App = () => {
         setLoading(loading);
     }
 
-    let initialLists = [];
-    const [lists, setLists] = useState(initialLists);
+    const [lists, setLists] = useState([]);
 
     const handleLists = (data: any) => {
         setLists(data);
+    }
+
+    const setDummyListsContent = () => {
+        const sampleData: any = [
+            [
+                {id: '0', dueDate: '2021-11-31', title: 'Item 0', description: 'Item 0'},
+                {id: '1', dueDate: '2021-11-31', title: 'Item 1', description: 'Item 1'},
+                {id: '2', dueDate: '2021-11-31', title: 'Item 2', description: 'Item 2'},
+                {id: '3', dueDate: '2021-11-31', title: 'Item 3', description: 'Item 3'},
+                {id: '4', dueDate: '2021-11-31', title: 'Item 4', description: 'Item 4'},
+                {id: '5', dueDate: '2021-11-31', title: 'Item 5', description: 'Item 5'},
+                {id: '6', dueDate: '2021-11-31', title: 'Item 6', description: 'Item 6'},
+                {id: '7', dueDate: '2021-11-31', title: 'Item 7', description: 'Item 7'},
+                {id: '8', dueDate: '2021-11-31', title: 'Item 8', description: 'Item 8'},
+                {id: '9', dueDate: '2021-11-31', title: 'Item 9', description: 'Item 9'},
+            ],
+            [],
+            []
+        ];
+        setLists(sampleData);
     }
 
     const [searchValue, setSearchValue] = useState('');
@@ -51,8 +71,15 @@ const App = () => {
     }
 
     const filteredLists = () => {
+
+        if (!searchValue) {
+            return lists;
+        }
+
         let filteredLists: any = [];
         lists.forEach((list: any, listKey: number) => {
+
+            // Filter list based on searchValue
             const filteredList = list.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()));
             filteredLists.push(filteredList);
         });
@@ -60,13 +87,16 @@ const App = () => {
         return filteredLists;
     }
 
+    // On app load get data from backend
     useEffect(() => {
         const requestUrl = baseUrl + 'todo/get';
 
         fetch(requestUrl)
             .then((response) => response.json())
             .then((data) => {
-                setLists(data);
+                if (data[0].length !== 0 || data[1].length !== 0 && data[2].length !== 0) {
+                    setLists(data);
+                }
             });
     }, []);
 
@@ -115,6 +145,8 @@ const App = () => {
     return (
         <div className="app">
             <h1>To do list app</h1>
+            {lists.length === 0 ? <Button value="Add sample content" onClick={setDummyListsContent} /> : ''}
+
             <Search handleSearchValue={handleSearchValue} />
 
             <DragDropContext onDragEnd={onDragEnd}>

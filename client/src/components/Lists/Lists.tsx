@@ -7,7 +7,6 @@ import I18n from "../../services/I18n";
 import Item from '../Item/Item';
 
 
-
 const Lists = (props: any) => {
 
     const columnLists = props.lists.map(function(column:any, id: number) {

@@ -1,13 +1,9 @@
 
 // https://learn.coderslang.com/0021-nodejs-require-is-not-defined-error/
 
-// const express = require("express");
-// import express from 'express';
 import express, {Request,Response,Application} from 'express';
 import cors from 'cors';
-// import { writeFileSync, readFileSync } as fs from 'fs';
 import * as fs from "fs";
-// import fetch from 'node-fetch';
 
 const PORT = process.env.PORT || 3001;
 

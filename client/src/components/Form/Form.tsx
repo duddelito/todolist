@@ -15,6 +15,8 @@ const Form = (props: any) => {
         description: ""
     });
 
+
+    // Fill in form on edit
     useEffect(() => {
         if (props.selectedItem) {
             setItemData(props.selectedItem);

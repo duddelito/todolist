@@ -2,7 +2,6 @@ import React from "react";
 import {Draggable} from 'react-beautiful-dnd';
 
 import './Item.css';
-import I18n from "../../services/I18n";
 
 const Item = (props: any) => {
 

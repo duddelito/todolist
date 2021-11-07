@@ -7,12 +7,11 @@ li {
 }
 
 .keyprop {
-    bottom: 16px;
+    bottom: 5px;
     font-size: 6.5px;
     position: absolute;
     text-align: right;
-    right: 23px;
-
+    right: 10px;
 }
 
 .edit {

@@ -1,22 +1,18 @@
 import express, {Request,Response,Application} from 'express';
-import cors from 'cors';
 import * as fs from "fs";
 import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 
-router.get("/get", (request:Request,  response:Response) => {
 
+router.get("/get", (request:Request,  response:Response) => {
     fs.readFile('./todos.json', 'utf8', (error, data) => {
-        try {
+        if (!error) {
             let todos = JSON.parse(data);
             response.json(todos);
             console.log('Returned current list');
-        } catch (error) {
-            console.log('No todo list found');
         }
     });
-
 });
 
 
@@ -28,7 +24,6 @@ router.post('/add', function(request:Request, response:Response) {
         dueDate: request.body.dueDate,
         title: request.body.title,
         description: request.body.description,
-        archived: ''
     };
 
     // Read to see if there already is a to do list
@@ -45,19 +40,14 @@ router.post('/add', function(request:Request, response:Response) {
                 [] // Done list
             ];
             fs.writeFile('./todos.json', JSON.stringify(lists), error => {
-                if (error) {
-                    console.log('Error creating file', error);
-                } else {
-                    console.log('Successfully created file');
+                if (!error) {
                     response.json(lists);
+                    console.log('Successfully created file');
                 }
             });
-            return;
         }
-
         // Else try to update the list with the new item
-        try {
-
+        else {
             // let todos: any = [];
             let lists: any;
             if (data.length > 0) {
@@ -68,16 +58,11 @@ router.post('/add', function(request:Request, response:Response) {
             lists[0].push(newTodo);
 
             fs.writeFile('./todos.json', JSON.stringify(lists), error => {
-                if (error) {
-                    console.log('Error updating file', error);
-                } else {
-                    console.log('Successfully updated file with new todo');
+                if (!error) {
                     response.json(lists);
+                    console.log('Successfully updated file with new todo');
                 }
             });
-
-        } catch (err) {
-            console.log('Error parsing JSON:', err);
         }
     });
 });
@@ -91,22 +76,12 @@ router.put('/edit', function(request:Request, response:Response) {
         dueDate: request.body.dueDate,
         title: request.body.title,
         description: request.body.description,
-        archived: ''
     };
 
     // Read to see if there already is a to do list
     fs.readFile('./todos.json', 'utf8', (error, data) => {
 
-        // If no list, then create one
-        if (error) {
-            console.log('No list found');
-            return;
-        }
-
-        // Else try to update the list with the new item
-        try {
-
-            // let todos: any = [];
+        if (!error) {
             let lists: any;
             if (data.length > 0) {
                 lists = JSON.parse(data);
@@ -121,16 +96,12 @@ router.put('/edit', function(request:Request, response:Response) {
             });
 
             fs.writeFile('./todos.json', JSON.stringify(lists), error => {
-                if (error) {
-                    console.log('Error updating file', error);
-                } else {
-                    console.log('Successfully updated file with the edited todo');
+                if (!error) {
                     response.json(lists);
+                    console.log('Successfully updated file with the edited todo');
                 }
             });
 
-        } catch (err) {
-            console.log('Error parsing JSON:', err);
         }
     });
 });
@@ -145,15 +116,7 @@ router.delete('/delete', function(request:Request, response:Response) {
     fs.readFile('./todos.json', 'utf8', (error, data) => {
 
         // If no list, then create one
-        if (error) {
-            console.log('No list found');
-            return;
-        }
-
-        // Else try to update the list with the new item
-        try {
-
-            // let todos: any = [];
+        if (!error) {
             let lists: any;
             if (data.length > 0) {
                 lists = JSON.parse(data);
@@ -168,37 +131,26 @@ router.delete('/delete', function(request:Request, response:Response) {
             });
 
             fs.writeFile('./todos.json', JSON.stringify(lists), error => {
-                if (error) {
-                    console.log('Error updating file', error);
-                } else {
-                    console.log('Successfully updated file deleting a todo');
+                if (!error) {
                     response.json(lists);
+                    console.log('Successfully updated file deleting a todo');
                 }
             });
-
-        } catch (err) {
-            console.log('Error parsing JSON:', err);
         }
     });
 });
 
 
 router.post('/update', function(request:Request, response:Response) {
-    try {
 
-        const lists = request.body;
-        fs.writeFile('./todos.json', JSON.stringify(lists), error => {
-            if (error) {
-                console.log('Error updating file', error);
-            } else {
-                console.log('Successfully updated file with new order');
-                response.json(lists);
-            }
-        });
+    const lists = request.body;
+    fs.writeFile('./todos.json', JSON.stringify(lists), error => {
+        if (!error) {
+            response.json(lists);
+            console.log('Successfully updated file with new order');
+        }
+    });
 
-    } catch (err) {
-        console.log('Error parsing JSON:', err);
-    }
 });
 
 export default router;

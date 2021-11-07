@@ -23,3 +23,10 @@ Regarding the styling, I just put in a little bit of love so that the app does n
 
 ##Sample content
 If you haven't added any todos you're able to use the button "Add sample content".
+
+##Warnings in the console
+I am experiencing a warning in the app: `Warning: Each child in a list should have a unique "key" prop`
+
+I've double-checked that the `<li>` element has a unique key prop and I also 
+found this link where they have the same problem with react beautiful dnd:
+https://github.com/atlassian/react-beautiful-dnd/issues/2084

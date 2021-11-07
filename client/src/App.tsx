@@ -31,6 +31,11 @@ const App = () => {
         const listId = event.target.dataset.listid;
         const itemId = event.target.dataset.itemid;
         const list: any = lists[listId];
+
+        if (!list) {
+            return;
+        }
+
         const itemIndex = list.findIndex(item => item.id === itemId);
 
         const currentItem = lists[listId][itemIndex];
@@ -50,21 +55,22 @@ const App = () => {
     const setDummyListsContent = () => {
         const sampleData: any = [
             [
-                {id: '0', dueDate: '2021-11-31', title: 'Item 0', description: 'Item 0'},
-                {id: '1', dueDate: '2021-11-31', title: 'Item 1', description: 'Item 1'},
-                {id: '2', dueDate: '2021-11-31', title: 'Item 2', description: 'Item 2'},
-                {id: '3', dueDate: '2021-11-31', title: 'Item 3', description: 'Item 3'},
-                {id: '4', dueDate: '2021-11-31', title: 'Item 4', description: 'Item 4'},
-                {id: '5', dueDate: '2021-11-31', title: 'Item 5', description: 'Item 5'},
-                {id: '6', dueDate: '2021-11-31', title: 'Item 6', description: 'Item 6'},
-                {id: '7', dueDate: '2021-11-31', title: 'Item 7', description: 'Item 7'},
-                {id: '8', dueDate: '2021-11-31', title: 'Item 8', description: 'Item 8'},
-                {id: '9', dueDate: '2021-11-31', title: 'Item 9', description: 'Item 9'},
+                {id: '0', dueDate: '2021-11-10', title: 'Item 0', description: 'Item 0'},
+                {id: '1', dueDate: '2021-11-11', title: 'Item 1', description: 'Item 1'},
+                {id: '2', dueDate: '2021-11-12', title: 'Item 2', description: 'Item 2'},
+                {id: '3', dueDate: '2021-11-13', title: 'Item 3', description: 'Item 3'},
+                {id: '4', dueDate: '2021-11-14', title: 'Item 4', description: 'Item 4'},
+                {id: '5', dueDate: '2021-11-15', title: 'Item 5', description: 'Item 5'},
+                {id: '6', dueDate: '2021-11-16', title: 'Item 6', description: 'Item 6'},
+                {id: '7', dueDate: '2021-11-17', title: 'Item 7', description: 'Item 7'},
+                {id: '8', dueDate: '2021-11-18', title: 'Item 8', description: 'Item 8'},
+                {id: '9', dueDate: '2021-11-19', title: 'Item 9', description: 'Item 9'},
             ],
             [],
             []
         ];
         setLists(sampleData);
+        updateServer(sampleData);
     }
 
     const [searchValue, setSearchValue] = useState('');
@@ -119,28 +125,19 @@ const App = () => {
         // Don't proceed if we are not moving an item
         if (!destination) return;
 
-        // If we are moving items within the same list
-        if (source.droppableId === destination.droppableId) {
+        let sourceList = lists[source.droppableId];
+        let destinationList = lists[destination.droppableId];
 
-            let currentList = lists[source.droppableId];
+        // Remove item from the source list
+        const [removedItem] = sourceList.splice(source.index, 1);
 
-            // Remove item from old index in the list
-            const [removedItem] = currentList.splice(source.index, 1);
-
-            // Add the item to the new index in the list
-            currentList.splice(destination.index, 0, removedItem);
+        // Make sure there is an item, fixes crash on drag n drop after search
+        if (!removedItem) {
+            return;
         }
-        // If we're moving from one list to another
-        else {
-            let sourceList = lists[source.droppableId];
-            let destinationList = lists[destination.droppableId];
 
-            // Remove item from the source list
-            const [removedItem] = sourceList.splice(source.index, 1);
-
-            // Add the item to the destination list
-            destinationList.splice(destination.index, 0, removedItem);
-        }
+        // Add the item to the destination list
+        destinationList.splice(destination.index, 0, removedItem);
 
         // Update state and store latest in the backend
         setLists(lists);

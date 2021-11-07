@@ -3,9 +3,8 @@
 
 import express, {Request,Response,Application} from 'express';
 import cors from 'cors';
-import * as fs from "fs";
 
-import todosRoutes from './routes/todos.js';
+import todosRoutes from './routes/Todos.js';
 
 const PORT = process.env.PORT || 3001;
 

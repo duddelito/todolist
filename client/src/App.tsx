@@ -28,10 +28,12 @@ const App = () => {
     });
 
     const handleEdit = (event: any) => {
-        const indexId = event.target.dataset.indexid;
         const listId = event.target.dataset.listid;
+        const itemId = event.target.dataset.itemid;
+        const list: any = lists[listId];
+        const itemIndex = list.findIndex(item => item.id === itemId);
 
-        const currentItem = lists[listId][indexId];
+        const currentItem = lists[listId][itemIndex];
         setSelectedItem(currentItem);
     }
 
@@ -94,7 +96,10 @@ const App = () => {
         fetch(requestUrl)
             .then((response) => response.json())
             .then((data) => {
-                if (data[0].length !== 0 || data[1].length !== 0 && data[2].length !== 0) {
+                if (data[0].length === 0 && data[1].length === 0 && data[2].length === 0) {
+                    // All empty
+                }
+                else {
                     setLists(data);
                 }
             });

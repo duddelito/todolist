@@ -44,12 +44,14 @@ const Form = (props: any) => {
         let requestUrl = props.baseUrl;
         if (event.target.name === 'delete') {
             requestUrl += 'todo/delete';
+            props.requestOptions.method = 'DELETE';
         }
         else if (itemData.id.length < 1) {
             requestUrl += 'todo/add';
         }
         else {
             requestUrl += 'todo/edit';
+            props.requestOptions.method = 'PUT';
         }
 
         props.requestOptions.body = JSON.stringify(itemData);

@@ -7,7 +7,7 @@ const Item = (props: any) => {
 
     // Some style on the items while being dragged
     const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-        background: isDragging ? "#4a2975" : "#ffffff",
+        background: isDragging ? "cornflowerblue" : "#ffffff",
         color: isDragging ?  "#ffffff": "#000000",
         ...draggableStyle
     })
@@ -21,7 +21,7 @@ const Item = (props: any) => {
                     {...provided.dragHandleProps}
                     style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                 >
-                    <span className="edit" data-indexid={props.index} data-listid={props.currentList}></span>
+                    <span className="edit" data-itemid={props.item.id} data-listid={props.currentList}></span>
                     <h3>{props.item.title}</h3>
                     <p>{props.item.description}</p>
                     <p className="dueDate">{props.item.dueDate}</p>

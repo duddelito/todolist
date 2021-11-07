@@ -18,7 +18,7 @@ router.get("/get", (request:Request,  response:Response) => {
 
 router.post('/add', function(request:Request, response:Response) {
 
-    // Prepare new to do item
+    // Prepare new to-do item
     const newTodo = {
         id: uuidv4(),
         dueDate: request.body.dueDate,
@@ -26,7 +26,7 @@ router.post('/add', function(request:Request, response:Response) {
         description: request.body.description,
     };
 
-    // Read to see if there already is a to do list
+    // Read to see if there already is a to-do list
     fs.readFile('./todos.json', 'utf8', (error, data) => {
 
         // If no list, then create one
@@ -39,6 +39,8 @@ router.post('/add', function(request:Request, response:Response) {
                 [], // Doing list
                 [] // Done list
             ];
+
+            // Store lists
             fs.writeFile('./todos.json', JSON.stringify(lists), error => {
                 if (!error) {
                     response.json(lists);
@@ -54,9 +56,11 @@ router.post('/add', function(request:Request, response:Response) {
                 lists = JSON.parse(data);
             }
 
-            newTodo.id = uuidv4();;
+            // Add the new item to the to-do list and give it a unique id
+            newTodo.id = uuidv4();
             lists[0].push(newTodo);
 
+            // Store the lists
             fs.writeFile('./todos.json', JSON.stringify(lists), error => {
                 if (!error) {
                     response.json(lists);
@@ -70,7 +74,7 @@ router.post('/add', function(request:Request, response:Response) {
 
 router.put('/edit', function(request:Request, response:Response) {
 
-    // Prepare new to do item
+    // Prepare new to-do item
     const editedTodo = {
         id: request.body.id,
         dueDate: request.body.dueDate,
@@ -78,7 +82,7 @@ router.put('/edit', function(request:Request, response:Response) {
         description: request.body.description,
     };
 
-    // Read to see if there already is a to do list
+    // Read to see if there already is a to-do list
     fs.readFile('./todos.json', 'utf8', (error, data) => {
 
         if (!error) {
@@ -87,6 +91,7 @@ router.put('/edit', function(request:Request, response:Response) {
                 lists = JSON.parse(data);
             }
 
+            // Updated the edited item
             lists.forEach((list: any, listKey: number) => {
                 list.forEach((item: any, itemKey: number) => {
                     if (item.id === editedTodo.id) {
@@ -95,6 +100,7 @@ router.put('/edit', function(request:Request, response:Response) {
                 });
             });
 
+            // Store the lists
             fs.writeFile('./todos.json', JSON.stringify(lists), error => {
                 if (!error) {
                     response.json(lists);
@@ -109,19 +115,19 @@ router.put('/edit', function(request:Request, response:Response) {
 
 router.delete('/delete', function(request:Request, response:Response) {
 
-    // Prepare new to do item
+    // Prepare new to-do item
     const toDelete = request.body.id;
 
-    // Read to see if there already is a to do list
+    // Read to see if there already is a to-do list
     fs.readFile('./todos.json', 'utf8', (error, data) => {
 
-        // If no list, then create one
         if (!error) {
             let lists: any;
             if (data.length > 0) {
                 lists = JSON.parse(data);
             }
 
+            // Remove the item to be deleted from the list
             lists.forEach((list: any, listKey: number) => {
                 list.forEach((item: any, itemKey: number) => {
                     if (item.id === toDelete) {
@@ -130,6 +136,7 @@ router.delete('/delete', function(request:Request, response:Response) {
                 });
             });
 
+            // Store the lists
             fs.writeFile('./todos.json', JSON.stringify(lists), error => {
                 if (!error) {
                     response.json(lists);
@@ -144,6 +151,8 @@ router.delete('/delete', function(request:Request, response:Response) {
 router.post('/update', function(request:Request, response:Response) {
 
     const lists = request.body;
+
+    // Store the updated lists order
     fs.writeFile('./todos.json', JSON.stringify(lists), error => {
         if (!error) {
             response.json(lists);

@@ -41,6 +41,7 @@ const Form = (props: any) => {
             return;
         }
 
+        // Check what we're doing with the item
         let requestUrl = props.baseUrl;
         if (event.target.name === 'delete') {
             requestUrl += 'todo/delete';
@@ -61,6 +62,7 @@ const Form = (props: any) => {
             .then((data) => {
                 props.handleLists(data);
 
+                // Clear form after submission
                 setItemData({
                     id: "",
                     title: "",

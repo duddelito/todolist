@@ -80,6 +80,7 @@ const App = () => {
 
     const filteredLists = () => {
 
+        // Only filter when there is a search string
         if (!searchValue) {
             return lists;
         }
@@ -102,6 +103,7 @@ const App = () => {
         fetch(requestUrl)
             .then((response) => response.json())
             .then((data) => {
+                // Only setLists if there is at least one item
                 if (data[0].length === 0 && data[1].length === 0 && data[2].length === 0) {
                     // All empty
                 }
@@ -111,6 +113,7 @@ const App = () => {
             });
     }, []);
 
+    // Update the lists on the server
     const updateServer = (data) => {
         const requestUrl = baseUrl + 'todo/update';
         requestOptions.body = JSON.stringify(data);

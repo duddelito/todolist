@@ -14,6 +14,9 @@ The React frontend runs on http://localhost:3000 and the backend on http://local
 In client/package.json there is a proxy making this possible to work. 
 `"proxy": "http://localhost:3001",`
 
+##Start
+Start the node server in /server with `npm start` and afterwards the same in /client. 
+
 ##Backend
 Just as an "easy" solution the backend stores the todos in a json file. Obviously it might have been a better idea to use a database for a real app, but just to be able to save down some data and to have some fun playing with Node.js a bit.
 

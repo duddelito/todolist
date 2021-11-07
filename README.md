@@ -1,5 +1,9 @@
 #Todo list app
 
+##Regarding the Requirements
+I left the pagination for last and ran out of time, BUT I have added 
+drag and drop functionality and am using 3 lists so I think the need
+for pagination is a bit smaller. 
 
 
 ##Install
@@ -19,6 +23,16 @@ Start the node server in /server with `npm start` and afterwards the same in /cl
 
 ##Backend
 Just as an "easy" solution the backend stores the todos in a json file. Obviously it might have been a better idea to use a database for a real app, but just to be able to save down some data and to have some fun playing with Node.js a bit.
+
+### API documentation
+- /todo/get (GET) - returns an array containing 3 array lists with items 
+- /todo/add (POST) - expects a new todo item(object) to be posted in looking like this:
+/todo/edit
+
+`{id: '0', dueDate: '2021-11-10', title: 'Item 0', description: 'Item 0'}`
+- /todo/edit (PUT) - expects an object in the same way as add
+- /todo/delete (DELETE) - expects an object in the same way as add
+
 
 ##Frontend
 The todos are sortable using react beautiful dnd, and so the app is quite inspired by trello which I like to use.
